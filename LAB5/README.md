@@ -19,3 +19,7 @@ Các máy vectơ hỗ trợ trong scikit-learn hỗ trợ cả vectơ mẫu dày
 
 -- Bài 2: 
 ![image](https://github.com/user-attachments/assets/4db23d7a-07e7-4d5a-8c92-25a8c8e855f1)
+
+-- Bài relu
+![Screenshot 2024-10-21 181550](https://github.com/user-attachments/assets/a87c24b7-bc8f-402f-bd3b-e817fcfe9bbd)
+
