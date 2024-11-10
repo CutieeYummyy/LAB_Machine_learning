@@ -17,18 +17,62 @@ Hàm này có thể được coi là một bộ công cụ cơ bản để xây 
 ![image](https://github.com/user-attachments/assets/7e8fcf0b-5cf8-4731-9af2-01ab242a0993)
 
 ##  Multi-layer Perceptron
-### Các ký hiệu và khái niệm
-- Layers
-Ngoài Input layers và Output layers, một Multi-layer Perceptron (MLP) có thể có nhiều Hidden layers ở giữa. Các Hidden layers theo thứ tự từ input layer đến output layer được đánh số thứ thự là Hidden layer 1, Hidden layer 2, … 
-Một node hình tròn trong một layer được gọi là một unit. Unit ở các input layer, hidden layers, và output layer được lần lượt gọi là input unit, hidden unit, và output unit. Đầu vào của các hidden layer được ký hiệu bởi z, đầu ra của mỗi unit thường được ký hiệu là a (thể hiện activation, tức giá trị của mỗi unit sau khi ta áp dụng activation function lên z ). Đầu ra của unit thứ i  trong layer thứ l  được ký hiệu là a ( l )i. Giả sử thêm rằng số unit trong layer thứ l )  (không tính bias) là d( l). Vector biểu diễn output của layer thứ l  được ký hiệu là a ( l ) ∈ R d ( l) .
+
 
 ![image](https://github.com/user-attachments/assets/05726ff2-8f30-44b1-b6d8-e20fef0debc6) 
-![image](https://github.com/user-attachments/assets/dcf9cc04-c43f-4cb3-b0c7-4ec8a1ae2ac3)
 
 ### Hàm sigmoid có dạng 
-**``Sigmoid`` :**  $$f(s) =  \frac{1}{1 + e^{-s}}$$ với đồ thị như trong Hình 5 (trái). Nếu đầu vào lớn, hàm số sẽ cho đầu ra gần với 1. Với đầu vào nhỏ (rất âm), hàm số sẽ cho đầu ra gần với 0. 
-Sigmoid saturate and kill gradients: Một nhược điểm dễ nhận thấy là khi đầu vào có trị tuyệt đối lớn (rất âm hoặc rất dương), gradient của hàm số này sẽ rất gần với 0. Điều này đồng nghĩa với việc các hệ số tương ứng với unit đang xét sẽ gần như không được cập nhật. Bạn đọc sẽ hiểu rõ hơn phần này trong phần Backpropagation. 
-Hàm tanh cũng có nhược điểm tương tự về việc gradient rất nhỏ với các đầu vào có trị tuyệt đối lớn.
+# Giới Thiệu về MLP (Multi-Layer Perceptron)
+
+Mạng Perceptron Đa lớp (MLP) là một loại mô hình học sâu thuộc vào nhóm mạng nơ-ron, được sử dụng rộng rãi trong các bài toán phân loại và hồi quy. MLP bao gồm nhiều lớp nơ-ron (neuron) kết nối đầy đủ với nhau: một lớp đầu vào, một hoặc nhiều lớp ẩn và một lớp đầu ra. Mỗi nơ-ron trong lớp ẩn và lớp đầu ra hoạt động bằng cách áp dụng một hàm kích hoạt (activation function) cho tổng trọng số của các đầu vào.
+
+## Cấu Trúc Cơ Bản của MLP
+
+1. **Lớp Đầu Vào**: Nhận dữ liệu đầu vào.
+2. **Lớp Ẩn**: Thực hiện xử lý thông tin qua các nơ-ron với trọng số và hàm kích hoạt.
+3. **Lớp Đầu Ra**: Cung cấp dự đoán cuối cùng cho đầu vào.
+
+![image](https://github.com/user-attachments/assets/dcf9cc04-c43f-4cb3-b0c7-4ec8a1ae2ac3)
+### Công Thức
+
+1. **Xác định trọng số**: Trong một MLP, mỗi nơ-ron trong lớp ẩn nhận đầu vào từ lớp trước và thực hiện tính toán như sau:
+
+   $$z = W \cdot x + b$$
+
+   - $$z$$: Đầu ra chưa kích hoạt của nơ-ron.
+   - $$W$$: Trọng số (weight) của nơ-ron.
+   - $x$: Đầu vào từ lớp trước.
+   - $b$: Hệ số lệch (bias).
+
+3. **Hàm Kích Hoạt**: Để tính toán đầu ra của một nơ-ron, hàm kích hoạt như hàm sigmoid, ReLU (Rectified Linear Unit), hoặc tanh thường được sử dụng:
+
+   - **Sigmoid**:
+     $$a = \frac{1}{1 + e^{-z}}$$
+
+   - **ReLU**:
+     $$a = \max(0, z)$$
+
+   - **Tanh**:
+     $$a = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$$
+
+   - Trong đó, $a$ là đầu ra của nơ-ron sau khi áp dụng hàm kích hoạt.
+
+4. **Lớp Đầu Ra**: Đầu ra của MLP được tính giống như lớp ẩn nhưng không áp dụng hàm kích hoạt (hoặc sử dụng hàm kích hoạt phù hợp cho bài toán phân loại):
+
+   $$\hat{y} = \text{softmax}(z) \quad \text{(cho phân loại nhiều lớp)}$$
+
+5. **Sai số và Tối ưu**: Sai số giữa dự đoán và giá trị thực tế được tính toán và sử dụng để cập nhật trọng số thông qua phương pháp lan truyền ngược (backpropagation):
+
+   $$L = -\sum_{i} y_i \log(\hat{y_i})$$
+
+   - $L$ là hàm mất mát (loss function).
+   - $y_i$ là nhãn thực tế.
+   - $\hat{y_i}$ là dự đoán của mô hình.
+
+## Kết Luận
+
+Mạng Perceptron Đa lớp là một trong những kiến trúc nền tảng của học sâu, giúp mô hình hóa các quan hệ phức tạp trong dữ liệu và đã được chứng minh là hiệu quả trong nhiều bài toán thực tế.
+
 
 ![Screenshot 2024-11-11 014444](https://github.com/user-attachments/assets/f939bacf-b366-4c78-bec0-3465efafdd6a)
 
